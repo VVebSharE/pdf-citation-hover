@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PDF</title>
+  <link rel="stylesheet" href="lib/pdf_viewer.css">
+  <link rel="stylesheet" href="viewer.css">
+  <style id="printPageStyle"></style>
+</head>
+<body>
+  <div id="toolbar" role="toolbar">
+    <div class="tb-left">
+      <button id="btnSidebar" class="icon" title="Table of contents"><svg><use href="icons.svg#i-contents"/></svg></button>
+      <span class="sep"></span>
+      <div class="split">
+        <button id="btnHighlight" class="icon tool" data-tool="highlight" title="Highlight"><svg><use href="icons.svg#i-highlight"/></svg></button>
+        <button class="chev" data-menu="hlMenu" title="Highlight colors"><svg><use href="icons.svg#i-chev"/></svg></button>
+      </div>
+      <div class="split">
+        <button id="btnDraw" class="labeled tool" data-tool="draw" title="Draw"><svg><use href="icons.svg#i-draw"/></svg><span>Draw</span></button>
+        <button class="chev" data-menu="drawMenu" title="Drawing options"><svg><use href="icons.svg#i-chev"/></svg></button>
+      </div>
+      <button id="btnErase" class="icon tool" data-tool="erase" title="Erase"><svg><use href="icons.svg#i-erase"/></svg></button>
+      <span class="sep"></span>
+      <div class="split">
+        <button id="btnText" class="icon tool" data-tool="text" title="Add text"><svg><use href="icons.svg#i-text"/></svg></button>
+        <button class="chev" data-menu="textMenu" title="Text options"><svg><use href="icons.svg#i-chev"/></svg></button>
+      </div>
+      <span class="sep"></span>
+      <button id="btnRead" class="icon" title="Read aloud (Ctrl+Shift+U)"><svg><use href="icons.svg#i-read"/></svg></button>
+    </div>
+
+    <div class="tb-center">
+      <button id="zoomOut" class="icon" title="Zoom out (Ctrl+Minus)"><svg><use href="icons.svg#i-minus"/></svg></button>
+      <button id="zoomIn" class="icon" title="Zoom in (Ctrl+Plus)"><svg><use href="icons.svg#i-plus"/></svg></button>
+      <button id="btnFit" class="icon" title="Fit to width (Ctrl+\)"><svg><use href="icons.svg#i-fitwidth"/></svg></button>
+      <span class="sep"></span>
+      <input id="pageNum" type="text" inputmode="numeric" value="1" aria-label="Page number">
+      <span id="pageOf">of –</span>
+      <span class="sep"></span>
+      <button id="btnRotate" class="icon" title="Rotate (Ctrl+])"><svg><use href="icons.svg#i-rotate"/></svg></button>
+      <span class="sep"></span>
+      <button id="btnPageView" class="icon" data-menu="pageViewMenu" title="Page view"><svg><use href="icons.svg#i-pageview"/></svg></button>
+    </div>
+
+    <div class="tb-right">
+      <button id="btnFind" class="icon" title="Find (Ctrl+F)"><svg><use href="icons.svg#i-find"/></svg></button>
+      <span class="sep"></span>
+      <button id="btnPrint" class="icon" title="Print (Ctrl+P)"><svg><use href="icons.svg#i-print"/></svg></button>
+      <button id="btnSave" class="icon" title="Save (Ctrl+S)"><svg><use href="icons.svg#i-save"/></svg></button>
+      <button id="btnSaveAs" class="icon" title="Save as (Ctrl+Shift+S)"><svg><use href="icons.svg#i-saveas"/></svg></button>
+      <span class="sep"></span>
+      <button id="btnFullscreen" class="icon" title="Full screen"><svg><use href="icons.svg#i-fullscreen"/></svg></button>
+      <button id="btnSettings" class="icon" data-menu="settingsMenu" title="Settings and more"><svg><use href="icons.svg#i-settings"/></svg></button>
+      <span class="sep"></span>
+      <button id="btnPin" class="icon" title="Unpin toolbar" aria-pressed="true"><svg><use href="icons.svg#i-pin-filled"/></svg></button>
+    </div>
+  </div>
+
+  <!-- Menus -->
+  <div id="pageViewMenu" class="menu" hidden>
+    <button data-spread="single" role="menuitemradio">One page</button>
+    <button data-spread="double" role="menuitemradio">Two pages</button>
+    <hr>
+    <button id="optCover" role="menuitemcheckbox">Show cover page separately</button>
+    <button id="optContinuous" role="menuitemcheckbox">Continuous scrolling</button>
+  </div>
+  <div id="textMenu" class="menu" hidden>
+    <div class="menu-label">Text color</div>
+    <div class="swatches" data-param="text-color"></div>
+    <div class="menu-label">Text size</div>
+    <div class="range-row"><input id="textSize" type="range" min="6" max="48" value="14"><span id="textSizeVal">14</span></div>
+  </div>
+  <div id="drawMenu" class="menu" hidden>
+    <div class="menu-label">Color</div>
+    <div class="swatches" data-param="ink-color"></div>
+    <div class="menu-label">Thickness</div>
+    <div class="range-row"><input id="inkThickness" type="range" min="1" max="20" value="2"><span id="inkThicknessVal">2</span></div>
+  </div>
+  <div id="hlMenu" class="menu" hidden>
+    <div class="menu-label">Highlight color</div>
+    <div class="swatches" data-param="hl-color"></div>
+  </div>
+  <div id="settingsMenu" class="menu" hidden>
+    <button id="mSaveAs"><svg><use href="icons.svg#i-saveas"/></svg>Save as<kbd>Ctrl+Shift+S</kbd></button>
+    <button id="mDownload"><svg><use href="icons.svg#i-download"/></svg>Download original PDF</button>
+    <hr>
+    <button data-zoom="auto">Zoom: Automatic</button>
+    <button data-zoom="page-fit">Zoom: Fit to page</button>
+    <button data-zoom="page-width">Zoom: Fit to width</button>
+    <button data-zoom="1">Zoom: Actual size</button>
+    <hr>
+    <button id="mOpenNative"><svg><use href="icons.svg#i-open"/></svg>Open in Edge's built-in viewer</button>
+    <button id="mProps"><svg><use href="icons.svg#i-info"/></svg>Document properties</button>
+  </div>
+
+  <div id="sidebar" aria-hidden="true">
+    <div class="sb-head">
+      <span id="sbTitle">Table of Contents</span>
+      <button id="sbClose" class="icon" title="Close"><svg><use href="icons.svg#i-close"/></svg></button>
+    </div>
+    <div class="sb-body">
+      <div class="sb-strip" role="tablist">
+        <button id="tabThumbs" class="icon" role="tab" title="Page thumbnails"><svg><use href="icons.svg#i-image"/></svg></button>
+        <button id="tabOutline" class="icon" role="tab" title="Table of contents"><svg><use href="icons.svg#i-contents"/></svg></button>
+      </div>
+      <div id="thumbs" class="sb-panel" hidden></div>
+      <div id="outline" class="sb-panel"></div>
+    </div>
+  </div>
+
+  <div id="viewerContainer" tabindex="0">
+    <div id="viewer" class="pdfViewer"></div>
+  </div>
+
+  <div id="findbar" hidden>
+    <input id="findInput" type="text" placeholder="Find in document" aria-label="Find in document">
+    <span id="findCount"></span>
+    <button id="findPrev" class="icon" title="Previous (Shift+Enter)"><svg><use href="icons.svg#i-up"/></svg></button>
+    <button id="findNext" class="icon" title="Next (Enter)"><svg><use href="icons.svg#i-down"/></svg></button>
+    <button id="findCase" class="icon toggle" title="Match case" aria-pressed="false"><b>Aa</b></button>
+    <button id="findWord" class="icon toggle" title="Whole words" aria-pressed="false"><b><u>ab</u></b></button>
+    <button id="findClose" class="icon" title="Close (Esc)"><svg><use href="icons.svg#i-close"/></svg></button>
+  </div>
+
+  <div id="zoomToast" hidden></div>
+  <div id="toast" hidden></div>
+  <div id="status" hidden></div>
+  <div id="progress" hidden><div id="progressText"></div><div class="bar"><div id="progressBar"></div></div></div>
+
+  <div id="citePop" role="tooltip" hidden>
+    <a id="citeTitle" target="_blank" rel="noopener"></a>
+    <div id="citeText"></div>
+  </div>
+
+  <dialog id="propsDlg">
+    <h2>Document properties</h2>
+    <table id="propsTable"></table>
+    <form method="dialog"><button>Close</button></form>
+  </dialog>
+
+  <div id="printContainer"></div>
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>

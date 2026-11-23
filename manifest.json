@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "PDF Citation Hover",
+  "version": "2.1.0",
+  "description": "PDF viewer that shows the paper title when you hover over a citation.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAweRAoXy8YieBvuWUfIlerpccKJGKJGSQs0KxBDWQsQasY/3nvk++n44TlhfDsk3akryakOySj6ZHMrIXuqjU5XK0UwBncZCgEeTRL22O+rpqgu8fYfouhFltKWxNTIu9KoFFRd1BZjKmPM1eF/VprMzgEZizOO+b1OLkmtlDH/YQEBUCtdMYW8tSdHYfFRtFxnzorNmMFQgfRH2eT7kKpZJx7lQQpXRL6GwWDFpawUbVKImSEClz1NtF0mCf8sNOkAhL4hgzLFU5DVpR+CsFZS/v+vH/wbpHrCpqKYMIX+o9HIRvKk8h83kac3b7i/1EuXQPuv87oifiGVTT/Wov7QIDAQAB",
+  "permissions": [
+    "scripting",
+    "storage",
+    "nativeMessaging"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "viewer.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "action": {
+    "default_title": "PDF Citation Hover: ON (click to turn off)"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
